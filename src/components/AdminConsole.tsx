@@ -241,10 +241,17 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ lang }) => {
                 </div>
                 <div className="flex justify-between text-xs font-bold">
                   <span className="text-white/70">API Key Status:</span>
-                  <span className="text-[#00FF88] flex items-center gap-1">
-                    <CheckCircle2 className="w-3.5 h-3.5" />
-                    Configured
-                  </span>
+                  {data.openrouterKeyConfigured ? (
+                    <span className="text-[#00FF88] flex items-center gap-1">
+                      <CheckCircle2 className="w-3.5 h-3.5" />
+                      Configured
+                    </span>
+                  ) : (
+                    <span className="text-red-400 flex items-center gap-1">
+                      <AlertTriangle className="w-3.5 h-3.5" />
+                      Missing Key
+                    </span>
+                  )}
                 </div>
               </div>
 
@@ -297,18 +304,25 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ lang }) => {
               <div className="space-y-2 pt-2 border-t border-white/10">
                 <div className="flex justify-between text-xs font-bold">
                   <span className="text-white/70">Primary Model:</span>
-                  <span className="text-white font-mono text-[11px]">gemini-3.6-flash</span>
+                  <span className="text-white font-mono text-[11px]">gemini-2.5-flash</span>
                 </div>
                 <div className="flex justify-between text-xs font-bold">
                   <span className="text-white/70">Fallbacks:</span>
-                  <span className="text-blue-300 font-mono text-[11px]">gemini-2.5-flash</span>
+                  <span className="text-blue-300 font-mono text-[11px]">gemini-2.0-flash, 2.5-pro</span>
                 </div>
                 <div className="flex justify-between text-xs font-bold">
                   <span className="text-white/70">API Key Status:</span>
-                  <span className="text-blue-300 flex items-center gap-1">
-                    <CheckCircle2 className="w-3.5 h-3.5" />
-                    Configured
-                  </span>
+                  {data.geminiKeyConfigured ? (
+                    <span className="text-blue-300 flex items-center gap-1">
+                      <CheckCircle2 className="w-3.5 h-3.5" />
+                      Configured
+                    </span>
+                  ) : (
+                    <span className="text-red-400 flex items-center gap-1">
+                      <AlertTriangle className="w-3.5 h-3.5" />
+                      Missing Key
+                    </span>
+                  )}
                 </div>
               </div>
 
@@ -658,7 +672,7 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ lang }) => {
                     <h3 className="font-black text-sm text-white">Test Google Gemini API</h3>
                   </div>
                   <span className="text-[10px] font-mono text-blue-300">
-                    gemini-3.6-flash
+                    gemini-2.5-flash
                   </span>
                 </div>
 

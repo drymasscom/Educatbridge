@@ -25,12 +25,11 @@ const getGeminiClient = () => {
 };
 
 // OpenRouter Configurations
-const DEFAULT_OPENROUTER_KEY = "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";
-const OPENROUTER_FREE_MODEL = "openrouter/free";
+const OPENROUTER_FREE_MODEL = "nvidia/nemotron-3-ultra-550b-a55b:free";
 const OPENROUTER_FALLBACK_MODELS = [
-  "openrouter/free",
-  "nvidia/nemotron-3-nano-30b-a3b:free",
   "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "nvidia/nemotron-3-nano-30b-a3b:free",
+  "meta-llama/llama-4-scout:free",
 ];
 
 // Provider Abstraction State
@@ -78,7 +77,10 @@ async function callOpenRouterAPI(params: {
   messages?: any[];
   enableReasoning?: boolean;
 }): Promise<{ content: string; reasoning_details?: any; modelUsed: string }> {
-  const apiKey = process.env.OPENROUTER_API_KEY || DEFAULT_OPENROUTER_KEY;
+  const apiKey = process.env.OPENROUTER_API_KEY;
+  if (!apiKey) {
+    throw new Error("OPENROUTER_API_KEY is not set in environment variables.");
+  }
 
   const msgs: any[] = [];
   if (params.systemPrompt) {
@@ -183,8 +185,8 @@ async function safeGenerateContent(ai: GoogleGenAI, params: {
   primaryModel?: string;
   fallbackModels?: string[];
 }) {
-  const primary = params.primaryModel || "gemini-3.6-flash";
-  const fallbacks = params.fallbackModels || ["gemini-2.5-flash", "gemini-2.5-pro"];
+  const primary = params.primaryModel || "gemini-2.5-flash";
+  const fallbacks = params.fallbackModels || ["gemini-2.0-flash", "gemini-2.5-pro"];
   const modelsToTry = [primary, ...fallbacks];
 
   let lastError: any = null;
@@ -211,8 +213,8 @@ async function safeChatMessage(ai: GoogleGenAI, params: {
   primaryModel?: string;
   fallbackModels?: string[];
 }) {
-  const primary = params.primaryModel || "gemini-3.6-flash";
-  const fallbacks = params.fallbackModels || ["gemini-2.5-flash", "gemini-2.5-pro"];
+  const primary = params.primaryModel || "gemini-2.5-flash";
+  const fallbacks = params.fallbackModels || ["gemini-2.0-flash", "gemini-2.5-pro"];
   const modelsToTry = [primary, ...fallbacks];
 
   let lastError: any = null;
@@ -278,7 +280,7 @@ async function callAITextGen(params: {
 
   // Gemini Fallback / Direct execution
   providerStats.geminiCount++;
-  providerStats.lastUsedProvider[params.feature] = "gemini (gemini-3.6-flash)";
+  providerStats.lastUsedProvider[params.feature] = "gemini (gemini-2.5-flash)";
   const ai = getGeminiClient();
 
   if (params.messages && params.messages.length > 0) {
@@ -353,7 +355,7 @@ function parseCleanJson(rawText: string): any {
 // Admin API Endpoints
 app.get("/api/admin/provider-status", (req, res) => {
   checkDailyReset();
-  const openrouterKey = process.env.OPENROUTER_API_KEY || DEFAULT_OPENROUTER_KEY;
+  const openrouterKey = process.env.OPENROUTER_API_KEY;
   const geminiKey = process.env.GEMINI_API_KEY;
 
   res.json({
@@ -407,7 +409,7 @@ app.post("/api/admin/test-provider", async (req, res) => {
       const duration = Date.now() - startTime;
       res.json({
         success: true,
-        message: "Successfully connected to Google Gemini API (gemini-3.6-flash).",
+        message: "Successfully connected to Google Gemini API (gemini-2.5-flash).",
         responseTimeMs: duration,
         sampleOutput: resp.text || "",
       });
