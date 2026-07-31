@@ -1,7 +1,6 @@
 import express from "express";
 import path from "path";
 import { GoogleGenAI } from "@google/genai";
-import { createServer as createViteServer } from "vite";
 
 const app = express();
 const PORT = 3000;
@@ -472,11 +471,11 @@ Return STRICTLY JSON:
           .replace(/[^\w\s]/gi, "").split(/\s+/).filter(Boolean).map((w: string, idx: number) => ({
             word: w,
             status: idx % 5 === 2 ? "warn" : "good",
-            ipaTip: idx % 5 === 2 ? "注意重音與長元音" : undefined
+            ipaTip: idx % 5 === 2 ? "��意重音與長元音" : undefined
           })),
         diagnosticTips: [
           "✓ 語速適中，整體發音清晰，符全 DSE Paper 4 口試的要求。",
-          "⚠️ 提示：個別多音節單字重音位置可再更加自然突出。",
+          "⚠️ 提示：個別多音節��字重音位置可再更加自然突出。",
           "💡 考評局建議：在小組討論中保持自信穩定的語調可獲得更高的 Communication Scores。"
         ]
       });
@@ -1036,6 +1035,7 @@ Return STRICTLY JSON matching this schema:
 // Start Vite server in dev or serve static build in production
 async function startServer() {
   if (process.env.NODE_ENV !== "production") {
+    const { createServer: createViteServer } = await import("vite");
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: "spa",
