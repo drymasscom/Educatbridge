@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { stats } from "../_admin-state";
+import { stats } from "./_state";
 
 export default function handler(req: Request, res: Response) {
   if (req.method !== "POST") {

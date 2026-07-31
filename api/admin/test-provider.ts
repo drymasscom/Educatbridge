@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { OPENROUTER_MODEL } from "../_admin-state";
+import { OPENROUTER_MODEL } from "./_state";
 
 async function testOpenRouter() {
   const apiKey = process.env.OPENROUTER_API_KEY;

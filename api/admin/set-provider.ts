@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { providers, type Provider } from "../_admin-state";
+import { providers, type Provider } from "./_state";
 
 export default function handler(req: Request, res: Response) {
   if (req.method !== "POST") {

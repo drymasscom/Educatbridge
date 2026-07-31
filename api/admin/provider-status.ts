@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { OPENROUTER_MODEL, providers, resetStatsIfNeeded, stats } from "../_admin-state";
+import { OPENROUTER_MODEL, providers, resetStatsIfNeeded, stats } from "./_state";
 
 export default function handler(_req: Request, res: Response) {
   resetStatsIfNeeded();
